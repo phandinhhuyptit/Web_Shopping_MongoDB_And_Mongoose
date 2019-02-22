@@ -1,0 +1,73 @@
+[
+    {
+        "ID": "M956439",
+        "Title": "A Book",
+        "ImageURL": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+        "Price": "19.99",
+        "Description": "This is My Books"
+    },
+    {
+        "ID": "M680524",
+        "Title": "Books",
+        "ImageURL": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+        "Price": "1.99",
+        "Description": "The Foreign Book"
+    },
+    {
+        "ID": "M175910",
+        "Title": "Book 312",
+        "ImageURL": "https://cdna.artstation.com/p/assets/images/images/011/011/012/large/juan-sevilla-deku-one-for-all.jpg?1527415144",
+        "Price": "9.99",
+        "Description": "Boku No Hero Academia"
+    },
+    {
+        "Title": "Black Clover",
+        "ImageURL": "http://1.bp.blogspot.com/-QkiOIYINKf0/WhQ6IFdwaxI/AAAAAAABQ_4/D-b3A6Yva5Uf14ssNvXHdrWtHg9AsutdgCLcBGAs/s0/01.jpg",
+        "Price": "20.5",
+        "Description": "Movie Black Clover",
+        "ID": "M248107"
+    },
+    {
+        "Title": "Dragon Ball Super",
+        "ImageURL": "https://sociorocketnewsen.files.wordpress.com/2018/07/db-1.jpg?w=640",
+        "Price": "21.4",
+        "Description": "Movie Dragon Ball Super  (Broly And Gogeta)",
+        "ID": "M473606"
+    
+    }
+
+
+ 
+
+
+
+
+
+
+
+    .updateOne( { _id : new ObjectId(req.user._id)},{$set :UpdateCart } )
+
+
+
+
+
+
+
+
+    .then (result =>{
+
+        this.cart = { Items: [] };
+        return db.collection('Users')
+        .updateOne(  { _id : new Obejct(this._id)}, {$set : { cart : {Items : [] }}})
+        .then(User =>{
+            console.log(User);
+        })
+
+    })
+    .catch(err =>{
+
+        console.log(err);
+
+    })
+    
+]

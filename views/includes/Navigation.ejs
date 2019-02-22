@@ -1,0 +1,44 @@
+<div class="backdrop"></div>
+<header class="main-header">
+
+    <button id="side-menu-toggle">Menu</button>
+    <nav class="main-header__nav">
+        <ul class="main-header__item-list">
+            <li class="main-header__item"><a class=" <%= Path=== '/' ? 'active': '' %>" href="/">Shop</a></li>
+            <li class="main-header__item"><a class=" <%= Path=== '/Cart' ? 'active': '' %>" href="/Cart">Cart</a></li>
+            <li class="main-header__item">
+                <a class="<%= Path === '/orders' ? 'active' : '' %>" href="/Orders">Orders</a>
+            </li>
+            <li class="main-header__item"><a class=" <%= Path=== '/Products' ? 'active': '' %>" href="/Products">Products</a></li>
+            <li class="main-header__item"><a class="<%= Path ==='/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add
+                    Product</a></li>
+            <li class="main-header__item"><a class="<%= Path ==='/admin/products' ? 'active' : '' %>" href="/admin/products">Admin
+                    Products</a></li>
+
+        </ul>
+    </nav>
+</header>
+<nav class="mobile-nav">
+    <ul class="mobile-nav__item-list">
+        <li class="mobile-nav__item">
+            <a class="<%= Path === '/' ? 'active' : '' %>" href="/">Shop</a>
+        </li>
+        <li class="mobile-nav__item">
+            <a class="<%= Path === '/products' ? 'active' : '' %>" href="/Products">Products</a>
+        </li>
+        <li class="mobile-nav__item">
+            <a class="<%= Path === '/cart' ? 'active' : '' %>" href="/Cart">Cart</a>
+        </li>
+        <li class="mobile-nav__item">
+            <a class="<%= Path === '/orders' ? 'active' : '' %>" href="/Orders">Orders</a>
+        </li>
+        <li class="mobile-nav__item">
+            <a class="<%= Path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product
+            </a>
+        </li>
+        <li class="mobile-nav__item">
+            <a class="<%= Path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= TitlePage %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+    <%- include('../includes/Navigation.ejs')  %>
+    <main>
+        <form class="product-form" action="/admin/<% if (Editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="<% if (Editing) { %><%= product.Title %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="imageUrl">Image URL</label>
+                <input type="text" name="imageURL" id="imageURL" value="<% if (Editing) { %><%= product.ImageURL %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="Price">Price</label>
+                <input type="number" name="Price" id="Price" step="0.01" value="<% if (Editing) { %><%= product.Price %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="Description">Description</label>
+                <textarea name="Description" id="Description" rows="5"><% if (Editing) { %><%= product.Description %><% } %></textarea>
+            </div>
+            <% if (Editing) { %>
+                <input type="hidden" value="<%= product._id %>" name="productId">
+            <% } %>
+
+            <button class="btn" type="submit"><% if (Editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+        </form>
+    </main>
+    
+    <%- include('../includes/End.ejs') %>
