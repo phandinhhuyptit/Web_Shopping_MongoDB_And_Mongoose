@@ -6,7 +6,7 @@ const ObjectId = mongodb.ObjectId;
 
 exports.GetAddProduct = (req, res, next) => {
 
-    
+
     res.render('Admin/add-product',
         {
             TitlePage: 'Add Product',
@@ -14,14 +14,14 @@ exports.GetAddProduct = (req, res, next) => {
             Editing: false
         });
 }
-exports.PostAddProduct = (req, res, next) => {   
+exports.PostAddProduct = (req, res, next) => {
     const Title = req.body.title;
     const ImageURL = req.body.imageURL;
     const Price = req.body.Price;
     const Description = req.body.Description;
-    
 
-    let pro_duct = new Product({Title, Price, Description, ImageURL});
+
+    let pro_duct = new Product({ Title, Price, Description, ImageURL });
     pro_duct.save()
         .then(result => {
             console.log('Created Product');
@@ -35,7 +35,7 @@ exports.PostAddProduct = (req, res, next) => {
 exports.GetAdminProducts = (req, res, next) => {
 
 
-     
+
     Product.find()
         .then(products => {
 
@@ -49,38 +49,32 @@ exports.GetAdminProducts = (req, res, next) => {
 
 
         })
-        .catch( err =>{
+        .catch(err => {
 
             console.log(err)
 
         })
-
-
 }
 
 exports.PostEditProduct = (req, res, next) => {
 
     const ProductId = req.body.productId;
-    const Title = req.body.title;
-    const ImageURL = req.body.imageURL;
-    const Price = req.body.Price;
-    const Description = req.body.Description;
-    // let EditProduct = new Product({Title, Price, Description, ImageURL});
-    // EditProduct.save();
-    Product.findByIdAndUpdate({_id : new ObjectId(ProductId) },{Title, Price, Description, ImageURL})
-    .then( EditProduct =>{
-       
-        res.redirect('/');
+    const Title = req.body.title; 
+    Product.findByIdAndUpdate({ _id: new ObjectId(ProductId) }, { Title, Price, Description, ImageURL })
+        .then(EditProduct => {
 
-    })
-    .catch(err =>{
-        console.log(err);
 
-    })
+            res.redirect('/admin/products');
 
-    res.redirect('/admin/products');
+        })
+        .catch(err => {
+            console.log(err);
+
+        })
+
 }
 
+// Get Edit Product
 exports.GetEditProduct = (req, res, next) => {
 
     const EditMode = req.query.Edit;
@@ -95,29 +89,33 @@ exports.GetEditProduct = (req, res, next) => {
     else {
         console.log(ID);
 
-        Product.findById( {_id : new ObjectId(ID)} ) 
-        .then(Product =>{
+        Product.findById({ _id: new ObjectId(ID) })
+            .then(Product => {
 
-            res.render('Admin/add-product',
-            {
-                TitlePage: 'Edit Product',
-                Path: '/admin/edit-product',
-                Editing: EditMode,
-                product: Product
-            });
-        })
+                res.render('Admin/add-product',
+                    {
+                        TitlePage: 'Edit Product',
+                        Path: '/admin/edit-product',
+                        Editing: EditMode,
+                        product: Product
+                    });
+            })
         //   res.redirect('/');
     }
 }
 
+// Delete Product 
 exports.PostDeleteProduct = (req, res, next) => {
 
     const ID = req.body.productId;
-    console.log(ID);
+    Product.findByIdAndDelete(ID)
+    .then(Product =>{
 
-    Product.DeletePrductID(ID);
+        res.redirect('/admin/products');
+    })
+    .catch( err =>{
 
-    res.redirect('/admin/products');
+        console.log(err);
 
-
+    })
 }; 
