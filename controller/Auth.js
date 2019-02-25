@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const bcrypt = require('bcryptjs');
 
 exports.Get_Login = (req, res, next) => {
 
@@ -13,6 +14,11 @@ exports.Get_Login = (req, res, next) => {
 };
 
 exports.Post_Login = (req, res, next) => {
+
+    const Email = req.body.email;
+    const Password = req.body.password;
+    
+
 
     User.findById('5c70f5301e0806425c377368')
         .then(user => {
@@ -66,30 +72,45 @@ exports.Post_Sign_Up = (req, res, next) => {
             if (!user) {
                 if (Password !== ConfirmPassword) {
 
-                    res.redirect('/signup');
+                    return res.redirect('/signup');
 
                 }
-                const Account = new User({
-                    Name: Name,
-                    Email: Email,
-                    Password: Password,
-                    Cart : {
-                        Items:[]
-                    }
-                })
-               return Account.save( err=>{
 
-                    console.log(err);
-                   return  res.redirect('/login');
+                return bcrypt.hash(Password, 12)
+                    .then(haddlePassword => {
+                        if (haddlePassword) {
 
-                } );
-              
+                            const Account = new User({
+                                Name: Name,
+                                Email: Email,
+                                Password: haddlePassword,
+                                Cart: {
+                                    Items: []
+                                }
+                            })
+                            return Account.save();
+                        }
+                        return res.redirect('/signup');
 
-            }            
+                    })
+                    .then(result => {
 
-            return  res.redirect('/signup');           
+                        res.redirect('/login');
+
+                    })
+                    .catch(err => {
+
+                        console.log(err);
+
+                    })
+
+
+
+            }
+            return res.redirect('/signup')
 
         })
+
         .catch(err => {
 
             console.log(err);
