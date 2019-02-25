@@ -33,13 +33,14 @@
                     <p class="product__description"><%= Product.Description %></p>
                 </div>
                 <div class="card__actions">
-                        <%- include('../includes/Add-To-Cart.ejs',{Product : Product}) %>
+                        <a href="/Products/<%= Product._id %>" class="btn">Detail</a>
+                    <% if (isAuthenticated) { %>
+                        <%- include('../includes/Add-To-Cart.ejs',{Product: Product}) %>
+                     <% } %>
                 </div>
             </article>
             <% }); %> 
         </div>
-
-
        
         <% } else { %>
             <h1>No Products Found!</h1>

@@ -5,23 +5,31 @@ const ObjectId = mongodb.ObjectId;
 
 
 exports.GetAddProduct = (req, res, next) => {
-
+    
 
     res.render('Admin/add-product',
         {
             TitlePage: 'Add Product',
             Path: '/admin/add-product',
-            Editing: false
+            Editing: false,
+            isAuthenticated: req.session.isLoggedIn
         });
 }
 exports.PostAddProduct = (req, res, next) => {
-    const Title = req.body.title;
-    const ImageURL = req.body.imageURL;
-    const Price = req.body.Price;
-    const Description = req.body.Description;
+    const title = req.body.title;
+    const imageURL = req.body.imageURL;
+    const price = req.body.Price;
+    const description = req.body.Description;
 
 
-    let pro_duct = new Product({ Title, Price, Description, ImageURL });
+    let pro_duct = new Product({
+
+        Title:title ,
+        Price : price ,
+        Description : description ,
+        ImageURL : imageURL,
+        UserID : req.user
+    });
     pro_duct.save()
         .then(result => {
             console.log('Created Product');
@@ -35,7 +43,6 @@ exports.PostAddProduct = (req, res, next) => {
 exports.GetAdminProducts = (req, res, next) => {
 
 
-
     Product.find()
         .then(products => {
 
@@ -43,10 +50,10 @@ exports.GetAdminProducts = (req, res, next) => {
                 {
                     TitlePage: 'Admin Products',
                     Path: '/admin/products',
-                    prods: products
+                    prods: products,
+                     isAuthenticated:  req.session.isLoggedIn
                 }
             );
-
 
         })
         .catch(err => {
@@ -59,19 +66,25 @@ exports.GetAdminProducts = (req, res, next) => {
 exports.PostEditProduct = (req, res, next) => {
 
     const ProductId = req.body.productId;
-    const Title = req.body.title; 
-    Product.findByIdAndUpdate({ _id: new ObjectId(ProductId) }, { Title, Price, Description, ImageURL })
-        .then(EditProduct => {
+    const title = req.body.title;
+    const imageURL = req.body.imageURL;
+    const price = req.body.Price;
+    const description = req.body.Description;
+    Product.findByIdAndUpdate({ _id: new ObjectId(ProductId) },
+     { Title : title, 
+       Price : price,
+       Description : description,
+       ImageURL :  imageURL })
 
+
+        .then(EditProduct => {
 
             res.redirect('/admin/products');
 
         })
         .catch(err => {
             console.log(err);
-
         })
-
 }
 
 // Get Edit Product
@@ -97,7 +110,8 @@ exports.GetEditProduct = (req, res, next) => {
                         TitlePage: 'Edit Product',
                         Path: '/admin/edit-product',
                         Editing: EditMode,
-                        product: Product
+                        product: Product,
+                        isAuthenticated:  req.session.isLoggedIn
                     });
             })
         //   res.redirect('/');

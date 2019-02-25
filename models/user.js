@@ -1,3 +1,121 @@
+const mongoose = require('mongoose');
+const Product = require('./product');
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+
+    Name: {
+        type: String,
+        required: true,
+        
+
+    },
+
+    Email: {
+        type: String,
+        required: true
+    },
+    Cart: {
+
+        Items: [
+            {
+                ProductId: { type: Schema.Types.ObjectId, ref: 'Products', required: true },
+                Quantity: { type: Number, required: true }
+            }
+        ]
+
+    }
+});
+
+UserSchema.methods.Add_To_Cart = function (Product) {
+
+
+    const CartProductIndex = this.Cart.Items.findIndex(Prduct_Of_Cart => Prduct_Of_Cart.ProductId.toString() === Product._id.toString());
+
+    const UpdateCartItems = [...this.Cart.Items];
+    let NewQuantity = 1;
+
+    if (CartProductIndex >= 0) {
+
+        NewQuantity = this.Cart.Items[CartProductIndex].Quantity + 1;
+        UpdateCartItems[CartProductIndex].Quantity = NewQuantity;
+    }
+    else {
+
+        UpdateCartItems.push({ ProductId: Product._id, Quantity: NewQuantity });
+
+    }
+    const UpdateCart = {
+
+        Items: UpdateCartItems
+    }
+    this.Cart = UpdateCart
+    return this.save();
+}
+
+
+UserSchema.methods.DeleteProductFromCart = function (Id) {
+    const UpdateCart = this.Cart.Items.filter(product => {
+
+        return product.ProductId.toString() !== Id.toString();
+
+    });
+
+
+    this.Cart.Items = UpdateCart;
+    return this.save();
+
+}
+
+UserSchema.methods.Get_Cart = function () {
+
+
+    const ProductId = this.Cart.Items.map(p => {
+
+        return p.ProductId
+
+    });
+
+
+
+    return Product.find({ _id: { $in: ProductId } })
+        .then(Cartproducts => {
+
+            return Cartproducts.map(p => {
+
+
+
+                return {
+                    _id: p._id,
+                    Title: p.Title,
+                    Price: p.Price,
+                    Description: p.Description,
+                    ImageURL: p.ImageURL,
+                    Quantity: this.Cart.Items.find(Items => {
+
+                        return p._id.toString() === Items.ProductId.toString();
+
+                    }).Quantity
+                };
+
+            });
+
+ 
+        })
+        .catch(err => {
+            console.log(err);
+
+        })
+
+}
+UserSchema.methods.ClearCart = function() {
+
+    this.Cart.Items = [];
+    return this.save();
+}
+
+module.exports = mongoose.model('Users', UserSchema);
+
 
 // const GetDb = require('../util/database').GetDb;
 // const mongodb = require('mongodb');
@@ -13,7 +131,7 @@
 // //         this.username = username;
 // //         this.mail = mail;
 // //         this.cart = cart;
-       
+
 // //     }
 
 // //     save() {
@@ -24,12 +142,12 @@
 // //             .insertOne(this)
 // //             .then(User => {
 
-               
+
 // //                 return User;
 
 // //             })
 // //             .catch( err =>{
-                
+
 // //             })
 
 // //          return dbUser ;  
@@ -44,9 +162,9 @@
 
 // //          })         
 // //         const db = GetDb();
-   
+
 // //         const CartProductIndex = this.cart.Items.findIndex( Prduct_Of_Cart => Prduct_Of_Cart.ProductId.toString() === Product._id.toString());
-        
+
 // //         const UpdateCartItems = [...this.cart.Items];
 // //         let NewQuantity = 1;
 
@@ -58,7 +176,7 @@
 // //         else{
 
 // //             UpdateCartItems.push({ ProductId : new ObjectId(Product._id) , Quantity: NewQuantity } );
-            
+
 // //         }
 // //             const UpdateCart = {
 
@@ -75,25 +193,25 @@
 // //        .catch( err =>{
 // //            console.log(err);
 // //        })       
- 
+
 // //     }
-    
+
 // //     DeleteProductFromCart(productId){
-        
+
 // //         const db = GetDb();
 
 
 // //         const UpdateCart = this.cart.Items.filter( product =>{
 
 // //                     return product.ProductId.toString() !== productId.toString();
-                    
+
 // //         })
 
 // //        return  db.collection('Users')
 // //         .updateOne({_id : new Object(this._id)} , {$set :{ cart :{Items : UpdateCart} } } )
 // //         .then( CartItems =>{
 
-        
+
 // //             return CartItems;
 
 // //         })
@@ -106,7 +224,7 @@
 // //     }
 
 
-    
+
 // //     GetCart() {
 
 // //         const db = GetDb();
@@ -116,19 +234,19 @@
 // //             return p.ProductId
 
 // //         });  
-    
+
 
 // //         return db.collection('products')
 // //         .find({_id : {$in : ProductId }})
 // //         .toArray()
 // //         .then( Cartproducts =>{
-        
+
 
 // //             return  Cartproducts.map( p =>{                     
-         
-               
+
+
 // //                   return  { ...p, Quantity : this.cart.Items.find(Items =>{
-                            
+
 // //                            return  p._id.toString() === Items.ProductId.toString();
 
 // //                    }).Quantity
@@ -169,7 +287,7 @@
 // //         const db = GetDb();        
 // //        return this.GetCart().
 // //         then(product =>{
-            
+
 // //             const order = {
 
 // //                 items : product,
@@ -182,7 +300,7 @@
 // //             }
 // //            return   db.collection('Orders')
 // //                      .insertOne(order)
-                    
+
 // //         })
 // //         .then (result =>{
 // //             this.cart = { Items: [] };
@@ -191,17 +309,17 @@
 // //             .then(User =>{
 // //                 console.log(User);
 // //             })
-    
+
 // //         })
 // //         .catch(err =>{
-    
+
 // //             console.log(err);
-    
+
 // //         })
 // //     }
 
 // //     static findByID(UserId) {
-        
+
 // //         const db = GetDb();
 
 // //         let dbUser = db.collection('Users')
@@ -213,7 +331,7 @@
 // //                      .catch( err =>{
 // //                          console.log(err);
 // //                      }) 
-                     
+
 // //          return dbUser;            
 // //     }
 

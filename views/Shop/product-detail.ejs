@@ -15,31 +15,24 @@
 <body>
     <%- include('../includes/Navigation.ejs') %>
 
-    <main>
-        
-        <div class="grid">
+    <main class="centered">
 
-            <article class="card product-item">
-                <header class="card__header">
-                    <h1 class="product__title">
-                        <%= Product.Title %>
-                    </h1>
-                </header>
-                <div class="card__image">
-                    <img src='<%= Product.ImageURL %>' alt="A Book">
-                </div>
-                <div class="card__content">
-                    <h2 class="product__price">$<%= Product.Price %></h2>
-                    <p class="product__description"><%= Product.Description %></p>
-                </div>
-                <div class="card__actions">
+        <h1 class="product__title">
+                  <%= Product.Title %>
+        </h1>
 
-                        <%- include('../includes/Add-To-Cart.ejs') %>
-                    
-                </div>
-            </article>
-        </div>       
-        
+        <div class="image">
+                 <img src='<%= Product.ImageURL %>' alt="A Book">
+        </div>
+        <div class="card__content">
+                <h2 class="product__price">$<%= Product.Price %></h2>
+                <p class="product__description"><%= Product.Description %></p>
+        </div>
+        <div class="card__actions">
+
+            <%- include('../includes/Add-To-Cart.ejs') %>
+
+        </div>
 
     </main>
-    <%- include('../includes/End.ejs') %> 
+<%- include('../includes/End.ejs') %>

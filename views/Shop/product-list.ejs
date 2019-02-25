@@ -32,21 +32,20 @@
                     <h2 class="product__price">$<%= Product.Price %></h2>
                     <p class="product__description"><%= Product.Description %></p>
                 </div>
-                <div class="card__actions">
-                        <a href="/Products/<%= Product._id %>" class="btn">Detail</a>
-                        
-                        <%- include('../includes/Add-To-Cart.ejs',{Product: Product}) %>
-
+                <div class="card__actions">                    
+                    <% if (isAuthenticated) { %>
+                             <%- include('../includes/Add-To-Cart.ejs',{Product: Product}) %>
+                    <% } %>
                 </div>
             </article>
-            <% }); %> 
+            <% }); %>
         </div>
 
 
-       
+
         <% } else { %>
-            <h1>No Products Found!</h1>
+        <h1>No Products Found!</h1>
         <% } %>
 
     </main>
-<%- include('../includes/End.ejs') %>
+    <%- include('../includes/End.ejs') %>

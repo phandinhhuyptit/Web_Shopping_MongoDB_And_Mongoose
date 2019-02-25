@@ -25,12 +25,17 @@ const ProductSchema = new Schema ({
 
         type : String , 
         required : true
+    },
+    UserID : {
+        type : Schema.Types.ObjectId,
+        ref : 'Users',        
+        require : true
     }
 
 })
 
 // Create Collection 
-module.exports = mongoose.model('Product' , ProductSchema);    
+module.exports = mongoose.model('Products' , ProductSchema);    
 
 // const Cart = require('./cart');
 // const GetDb = require('../util/database').GetDb;

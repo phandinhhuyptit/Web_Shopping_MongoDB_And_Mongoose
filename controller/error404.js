@@ -3,8 +3,8 @@ exports.GetError404 = (req,res,next)=>{
         
         
         TitlePage :'Page Not Found',
-        Path:'/404'    
-    
+        Path:'/404',    
+        isAuthenticated:  req.session.isLoggedIn
     });
 
 }

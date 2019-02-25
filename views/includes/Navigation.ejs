@@ -4,18 +4,45 @@
     <button id="side-menu-toggle">Menu</button>
     <nav class="main-header__nav">
         <ul class="main-header__item-list">
-            <li class="main-header__item"><a class=" <%= Path=== '/' ? 'active': '' %>" href="/">Shop</a></li>
-            <li class="main-header__item"><a class=" <%= Path=== '/Cart' ? 'active': '' %>" href="/Cart">Cart</a></li>
             <li class="main-header__item">
-                <a class="<%= Path === '/orders' ? 'active' : '' %>" href="/Orders">Orders</a>
+                <a class=" <%= Path=== '/' ? 'active': '' %>" href="/">Shop</a>
             </li>
-            <li class="main-header__item"><a class=" <%= Path=== '/Products' ? 'active': '' %>" href="/Products">Products</a></li>
-            <li class="main-header__item"><a class="<%= Path ==='/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add
-                    Product</a></li>
-            <li class="main-header__item"><a class="<%= Path ==='/admin/products' ? 'active' : '' %>" href="/admin/products">Admin
-                    Products</a></li>
+            <li class="main-header__item">
+                    <a class=" <%= Path=== '/Products' ? 'active': '' %>" href="/Products">Products</a>
+            </li>
+          <%  if(isAuthenticated){ %>
 
+                <li class="main-header__item">
+                        <a class=" <%= Path=== '/Cart' ? 'active': '' %>" href="/Cart">Cart</a>
+                    </li>
+                    <li class="main-header__item">
+                        <a class="<%= Path === '/orders' ? 'active' : '' %>" href="/Orders">Orders</a>
+                    </li>
+                 
+                    <li class="main-header__item">
+                        <a class="<%= Path ==='/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product</a>
+                    </li>
+                    <li class="main-header__item">
+                        <a class="<%= Path ==='/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products</a>
+                    </li>
+          <%  } %>
+            
         </ul>
+
+        <ul class="main-header__item-list">
+            <% if(!isAuthenticated )  { %>
+            <li class="main-header__item">
+                <a class="<%= Path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+            </li>
+
+            <% } else { %>
+                <form action="/logout" method="post">
+                    <button class="main-header__item" type="submit" name="logout" >Logout</button> 
+                    
+                </form>               
+            <% } %>
+        </ul>
+
     </nav>
 </header>
 <nav class="mobile-nav">
