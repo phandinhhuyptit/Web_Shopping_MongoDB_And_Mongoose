@@ -23,9 +23,7 @@ exports.Post_Login = (req, res, next) => {
             req.session.save(err => {
                 console.log(err);
                 res.redirect('/');
-
             })
-
         })
     // .then(() =>{
 
@@ -71,8 +69,6 @@ exports.Post_Sign_Up = (req, res, next) => {
                     res.redirect('/signup');
 
                 }
-
-
                 const Account = new User({
                     Name: Name,
                     Email: Email,
@@ -81,20 +77,17 @@ exports.Post_Sign_Up = (req, res, next) => {
                         Items:[]
                     }
                 })
-                Account.save( err=>{
+               return Account.save( err=>{
 
                     console.log(err);
-                     res.redirect('/login');
+                   return  res.redirect('/login');
 
                 } );
               
 
-            }
-            else {
+            }            
 
-                res.redirect('/signup');
-            }
-            
+            return  res.redirect('/signup');           
 
         })
         .catch(err => {
