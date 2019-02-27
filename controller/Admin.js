@@ -11,8 +11,8 @@ exports.GetAddProduct = (req, res, next) => {
         {
             TitlePage: 'Add Product',
             Path: '/admin/add-product',
-            Editing: false,
-            isAuthenticated: req.session.isLoggedIn
+            Editing: false
+            
         });
 }
 exports.PostAddProduct = (req, res, next) => {
@@ -51,7 +51,7 @@ exports.GetAdminProducts = (req, res, next) => {
                     TitlePage: 'Admin Products',
                     Path: '/admin/products',
                     prods: products,
-                     isAuthenticated:  req.session.isLoggedIn
+                     
                 }
             );
 
@@ -110,8 +110,8 @@ exports.GetEditProduct = (req, res, next) => {
                         TitlePage: 'Edit Product',
                         Path: '/admin/edit-product',
                         Editing: EditMode,
-                        product: Product,
-                        isAuthenticated:  req.session.isLoggedIn
+                        product: Product
+                        
                     });
             })
         //   res.redirect('/');

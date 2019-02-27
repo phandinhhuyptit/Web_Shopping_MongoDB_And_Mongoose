@@ -12,10 +12,13 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    
     Password : {
         type : String,
         required: true
     },
+    resetToken : String,
+    resetTokenExpiration : Date,   
     Cart: {
 
         Items: [
@@ -68,7 +71,7 @@ UserSchema.methods.DeleteProductFromCart = function (Id) {
 
 }
 
-UserSchema.methods.Get_Cart = function () {
+UserSchema.methods.Get_Cart = function (Product) {
 
 
     const ProductId = this.Cart.Items.map(p => {

@@ -5,12 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^2.1.1",
+    "csurf": "^1.9.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "mongodb": "^3.1.13",
-    "mongoose": "^5.4.14"
+    "mongoose": "^5.4.14",
+    "nodemailer": "^5.1.1",
+    "nodemailer-sendgrid-transport": "^0.2.0"
   },
   "devDependencies": {},
   "scripts": {

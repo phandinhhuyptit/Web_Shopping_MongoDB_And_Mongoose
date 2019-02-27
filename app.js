@@ -7,6 +7,13 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const bodyParser = require('body-parser');
 const path = require('path');
 const User = require('./models/user');
+// csrf attack 
+const csrf = require('csurf');
+// error massage
+const flash = require('connect-flash');
+
+
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
@@ -23,6 +30,8 @@ const store = new MongoDBStore({
     uri: MongoDB_URI,
     collection: 'mySession'
 })
+const csrfProtection = csrf(); 
+
 
 app.use( 
     session(
@@ -32,6 +41,11 @@ app.use(
             saveUninitialized: false,
             store : store
         }));
+
+// Middleware run into your views        
+app.use(csrfProtection)
+// Middleware run into your project
+app.use(flash());
 
 app.use((req, res, next) => {
     if(!req.session.user){
@@ -49,6 +63,13 @@ app.use((req, res, next) => {
         .catch(err => {
             console.log(err);
         })
+});
+app.use((req, res, next) => {
+    // Middleware global to any routes 
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    // public csrfToken  
+    res.locals.csrfToken = req.csrfToken();
+    next();
 });
 
 app.use('/admin', adminRoutes);

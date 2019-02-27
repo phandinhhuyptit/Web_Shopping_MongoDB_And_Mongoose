@@ -21,12 +21,4 @@
 .form-control textarea:focus {
   outline-color: #00695c;
 }
-button.main-header__item {
-  font: inherit;
-  background: transparent;
-  border: none;
-  text-decoration: none;
-  color: white;
-  cursor: pointer;
-}
 
