@@ -12,24 +12,24 @@
         <div class="user-message user-message--error"> <%= ErrorMessage %> </div>
 
         <% } %>
-        <form class="login-form" action="/signup" method="POST">
+        <form class="login-form" action="/signup" method="POST" novalidate>
             <div class="form-control">
                 <label for="email">E-Mail</label>
-                <input type="email" name="email" id="email">
+                <input class=" <%=  ValidationError.find(e =>  e.param === 'email' ) ? 'invalid' : ''%>" type="email" name="email" id="email" value="<%=OldInput.Email %>">
             </div>
             <div class="form-control">
                 <label for="name">Name</label>
-                <input type="text" name="name" id="name">
+                <input class="  <%=  ValidationError.find(e  =>  e.param === 'name' ) ? 'invalid' : ''%> " type="text" name="name" id="name" value="<%= OldInput.Name  %>">
             </div>
             <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
+                <input class=" <%=  ValidationError.find(e  => e.param === 'password' ) ? 'invalid' : ''%>" type="password" name="password" id="password" value="<%= OldInput.Password  %>">
             </div>
             <div class="form-control">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="confirmPassword">
+                <input class="<%=  ValidationError.find(e =>   e.param === 'confirmPassword' ) ? 'invalid' : ''%>" type="password" name="confirmPassword" id="confirmPassword" value="<%= OldInput.ConfirmPassword %>">
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn" type="submit">Login</button>
+            <button class="btn" type="submit">Sign Up</button>
         </form>
     </main><%- include('../includes/End.ejs') %>
