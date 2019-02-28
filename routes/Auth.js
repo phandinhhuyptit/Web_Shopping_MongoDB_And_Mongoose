@@ -43,19 +43,22 @@ router.post('/signup',
             .isLength({ min: 5 })
             .withMessage('Please enter a password least 5 characters.')
             .isAlphanumeric()
-            .withMessage('Please enter password with only letter and number'),
-
+            .withMessage('Please enter password with only letter and number')
+            ,
         check('name')
-            .isLength({ min: 2 }).withMessage('Please enter a name least 2 characters'),
-        body('confirmPassword')
+            .isLength({ min: 2 }).withMessage('Please enter a name least 2 characters')
+            .trim(),
+        check('confirmPassword')            
             .custom((value, { req }) => {
-
+                
                 if (value !== req.body.password) {
 
                     throw new Error('The Password Not Match ');
 
                 }
+                return true
             })
+         
 
     ]
     ,

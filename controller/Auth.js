@@ -16,7 +16,6 @@ const transporter = nodemailer.createTransport(
     })
 );
 
-
 exports.Get_Login = (req, res, next) => {
 
     let message = req.flash('Error');
@@ -76,7 +75,7 @@ exports.Post_Login = (req, res, next) => {
                         Email: Email,
                         Password: Password
                     },
-                    ValidationError: []
+                    ValidationError: [{param : 'email'}]
                 });
             }
 
@@ -93,7 +92,7 @@ exports.Post_Login = (req, res, next) => {
                                 Email: Email,
                                 Password: Password
                             },
-                            ValidationError: []
+                            ValidationError: [{param : 'password'} ]
                         });
 
                     }
@@ -155,12 +154,12 @@ exports.Get_Sign_Up = (req, res, next) => {
     });
 }
 exports.Post_Sign_Up = (req, res, next) => {
-
+    
     const Email = req.body.email.toLowerCase();
-    const Name = req.body.name;
+    const Name = req.body.name.replace(/\s{2,}/g,' ');
     const Password = req.body.password;
     const ConfirmPassword = req.body.confirmPassword;
-
+                
     const Error = validationResult(req);
 
 
@@ -178,7 +177,7 @@ exports.Post_Sign_Up = (req, res, next) => {
                 Password: Password,
                 ConfirmPassword: ConfirmPassword
             },
-            Validation: Error.array()
+            ValidationError: Error.array()
         });
 
     }
@@ -289,7 +288,7 @@ exports.Get_New_Password = (req, res, next) => {
     }
     const token = req.params.token;
 
-    User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
+    User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() }})
         .then(user => {
             if (user) {
                 res.render('Auth/new-password', {

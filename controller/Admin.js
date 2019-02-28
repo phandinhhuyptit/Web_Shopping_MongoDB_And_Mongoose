@@ -1,36 +1,67 @@
 const Product = require('../models/product');
 const mongodb = require('mongodb');
+const { validationResult } = require('express-validator/check')
 
 const ObjectId = mongodb.ObjectId;
 
 
 exports.GetAddProduct = (req, res, next) => {
-    
+
 
     res.render('Admin/add-product',
         {
             TitlePage: 'Add Product',
             Path: '/admin/add-product',
-            Editing: false
-            
+            Editing: false,
+            ErrorMessage: null,
+            OldInput: {
+
+                title: '',
+                imageURL: '',
+                Price: '',
+                Description: ''
+            },
+            ValidationError: []
         });
 }
 exports.PostAddProduct = (req, res, next) => {
-    const title = req.body.title;
+
+    const Error = validationResult(req);
+
+
+    const title = req.body.title.replace(/\s{2,}/g, ' ');
     const imageURL = req.body.imageURL;
     const price = req.body.Price;
     const description = req.body.Description;
+    if (!Error.isEmpty()) {
+        console.log(Error);
+        return res.status(402).render('Admin/add-product',
+            {
+                TitlePage: 'Add Product',
+                Path: '/admin/add-product',
+                Editing: false,
+                ErrorMessage: Error.array()[0].msg,
+                OldInput: {
 
+                    title: title,
+                    imageURL: imageURL,
+                    Price1: price,
+                    Description: description
+
+                },
+                ValidationError: Error.array()
+            });
+    }
 
     let pro_duct = new Product({
 
-        Title:title ,
-        Price : price ,
-        Description : description ,
-        ImageURL : imageURL,
-        UserID : req.user
+        Title: title,
+        Price: price,
+        Description: description,
+        ImageURL: imageURL,
+        UserID: req.user
     });
-    pro_duct.save()
+    return pro_duct.save()
         .then(result => {
             console.log('Created Product');
             res.redirect('/admin/products');
@@ -42,7 +73,6 @@ exports.PostAddProduct = (req, res, next) => {
 
 exports.GetAdminProducts = (req, res, next) => {
 
-
     Product.find()
         .then(products => {
 
@@ -50,8 +80,7 @@ exports.GetAdminProducts = (req, res, next) => {
                 {
                     TitlePage: 'Admin Products',
                     Path: '/admin/products',
-                    prods: products,
-                     
+                    prods: products
                 }
             );
 
@@ -70,11 +99,34 @@ exports.PostEditProduct = (req, res, next) => {
     const imageURL = req.body.imageURL;
     const price = req.body.Price;
     const description = req.body.Description;
+
+    const Error = validationResult(req);
+    if (!Error.isEmpty()) {
+       return res.render('Admin/add-product',
+            {
+                TitlePage: 'Edit Product',
+                Path: '/admin/edit-product',
+                Editing: true,
+                ErrorMessage: Error.array()[0].msg,
+                product: {
+
+                    Title: title,
+                    ImageURL: imageURL,
+                    Price: price,
+                    Description: description                    
+                },
+                ValidationError: Error.array()
+
+            });
+    }
+
     Product.findByIdAndUpdate({ _id: new ObjectId(ProductId) },
-     { Title : title, 
-       Price : price,
-       Description : description,
-       ImageURL :  imageURL })
+        {
+            Title: title,
+            Price: price,
+            Description: description,
+            ImageURL: imageURL
+        })
 
 
         .then(EditProduct => {
@@ -110,8 +162,11 @@ exports.GetEditProduct = (req, res, next) => {
                         TitlePage: 'Edit Product',
                         Path: '/admin/edit-product',
                         Editing: EditMode,
-                        product: Product
-                        
+                        product: Product,
+                        ValidationError: [],
+                        ErrorMessage : null
+
+
                     });
             })
         //   res.redirect('/');
@@ -123,13 +178,13 @@ exports.PostDeleteProduct = (req, res, next) => {
 
     const ID = req.body.productId;
     Product.findByIdAndDelete(ID)
-    .then(Product =>{
+        .then(Product => {
 
-        res.redirect('/admin/products');
-    })
-    .catch( err =>{
+            res.redirect('/admin/products');
+        })
+        .catch(err => {
 
-        console.log(err);
+            console.log(err);
 
-    })
+        })
 }; 
