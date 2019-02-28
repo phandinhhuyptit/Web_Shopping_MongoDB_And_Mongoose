@@ -88,7 +88,6 @@ UserSchema.methods.Get_Cart = function (Product) {
             return Cartproducts.map(p => {
 
 
-
                 return {
                     _id: p._id,
                     Title: p.Title,

@@ -22,7 +22,10 @@ exports.Get_Product_List = (req, res, next) => {
         })
         .catch(err => {
 
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
 
         })
 }
@@ -41,7 +44,10 @@ exports.Get_Index = (req, res, next) => {
         })
         .catch(err => {
 
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
 
         })
 
@@ -81,7 +87,10 @@ exports.Get_Order = (req, res, next) => {
         })
         .catch(err => {
 
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
 
         })
 };
@@ -131,7 +140,10 @@ exports.Post_Order = (req, res, next) => {
         .catch(err => {
 
 
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
 
         })
 };
@@ -158,7 +170,10 @@ exports.Post_Cart = (req, res, next) => {
         })
         .catch(err => {
 
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
         })
 
 }
@@ -194,8 +209,10 @@ exports.Post_Delete_Cart_Item = (req, res, next) => {
         })
         .catch(err => {
 
-            console.log(err);
-
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
         })
     res.redirect('/Cart');
 

@@ -45,21 +45,21 @@ exports.Post_Login = (req, res, next) => {
 
     const Email = req.body.email.toLowerCase();
     const Password = req.body.password;
-    const Error = validationResult(req);
+    const errors = validationResult(req);
 
-    if (!Error.isEmpty()) {
+    if (!errors.isEmpty()) {
 
-        console.log(Error.array()[0].msg);
+        console.log(errors.array()[0].msg);
         return res.status(404).render('Auth/login', {
 
             Path: '/login',
             TitlePage: 'Login',
-            ErrorMessage: Error.array()[0].msg,
+            ErrorMessage: errors.array()[0].msg,
             OldInput: {
                 Email: Email,
                 Password: Password
             },
-            ValidationError: Error.array()
+            ValidationError: errors.array()
         });
     }
     User.findOne({ Email: Email })
@@ -111,7 +111,11 @@ exports.Post_Login = (req, res, next) => {
                 })
         })
         .catch(err => {
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
+         
         })
 };
 exports.Post_Logout = (req, res, next) => {
@@ -119,8 +123,8 @@ exports.Post_Logout = (req, res, next) => {
 
     req.session.destroy(err => {
 
-        console.log(err);
-        res.redirect('/');
+        
+        res.status(200).redirect('/');
 
     });
 
@@ -160,24 +164,24 @@ exports.Post_Sign_Up = (req, res, next) => {
     const Password = req.body.password;
     const ConfirmPassword = req.body.confirmPassword;
                 
-    const Error = validationResult(req);
+    const errors = validationResult(req);
 
 
-    if (!Error.isEmpty()) {
-        console.log(Error.array());
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
 
         return res.status(402).render('Auth/signup', {
 
             Path: '/signup',
             TitlePage: 'Sing Up',
-            ErrorMessage: Error.array()[0].msg,
+            ErrorMessage: errors.array()[0].msg,
             OldInput: {
                 Email: Email,
                 Name: Name,
                 Password: Password,
                 ConfirmPassword: ConfirmPassword
             },
-            ValidationError: Error.array()
+            ValidationError: errors.array()
         });
 
     }
@@ -195,7 +199,7 @@ exports.Post_Sign_Up = (req, res, next) => {
                 })
                 return Account.save();
             }
-            return res.redirect('/signup');
+            return res.status(404).redirect('/signup');
 
         })
         .then(result => {
@@ -210,18 +214,18 @@ exports.Post_Sign_Up = (req, res, next) => {
             // });
         })
         .catch(err => {
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
         })
 
-        .catch(err => {
-
-            console.log(err);
-
-
-        })
+      
 }
 exports.Get_Reset_Password = (req, res, next) => {
 
+
+    
     let message = req.flash('Error');
     if (message.length > 0) {
 
@@ -270,7 +274,10 @@ exports.Post_Reset_Password = (req, res, next) => {
             })
             .catch(err => {
 
-                console.log(err);
+                const  error= new Error(err);
+                error.httpStatusCode = 500;
+                // it will throw to middleware app js and then it will display routes 500 
+                return next(error);
 
             })
 
@@ -304,7 +311,10 @@ exports.Get_New_Password = (req, res, next) => {
         })
         .catch(err => {
 
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
 
         })
 }
@@ -343,6 +353,9 @@ exports.Post_New_Password = (req, res, next) => {
 
         })
         .catch(err => {
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
         })
 };

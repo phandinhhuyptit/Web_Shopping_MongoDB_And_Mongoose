@@ -1,6 +1,7 @@
 const Product = require('../models/product');
 const mongodb = require('mongodb');
-const { validationResult } = require('express-validator/check')
+const { validationResult } = require('express-validator/check');
+const mongoose = require('mongoose');
 
 const ObjectId = mongodb.ObjectId;
 
@@ -26,21 +27,21 @@ exports.GetAddProduct = (req, res, next) => {
 }
 exports.PostAddProduct = (req, res, next) => {
 
-    const Error = validationResult(req);
+    const errors = validationResult(req);
 
-
+    
     const title = req.body.title.replace(/\s{2,}/g, ' ');
     const imageURL = req.body.imageURL;
     const price = req.body.Price;
     const description = req.body.Description;
     if (!Error.isEmpty()) {
-        console.log(Error);
+        
         return res.status(402).render('Admin/add-product',
             {
                 TitlePage: 'Add Product',
                 Path: '/admin/add-product',
                 Editing: false,
-                ErrorMessage: Error.array()[0].msg,
+                ErrorMessage: errors.array()[0].msg,
                 OldInput: {
 
                     title: title,
@@ -49,12 +50,11 @@ exports.PostAddProduct = (req, res, next) => {
                     Description: description
 
                 },
-                ValidationError: Error.array()
+                ValidationError: errors.array()
             });
     }
 
-    let pro_duct = new Product({
-
+    let pro_duct = new Product({    
         Title: title,
         Price: price,
         Description: description,
@@ -66,8 +66,11 @@ exports.PostAddProduct = (req, res, next) => {
             console.log('Created Product');
             res.redirect('/admin/products');
         })
-        .catch(err => {
-            console.log(err);
+        .catch(err => {       
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
         });
 };
 
@@ -76,6 +79,10 @@ exports.GetAdminProducts = (req, res, next) => {
     Product.find()
         .then(products => {
 
+            if(products){
+
+                throw new Error(' Not Get Products ');
+            }
             res.render('Admin/products',
                 {
                     TitlePage: 'Admin Products',
@@ -87,7 +94,10 @@ exports.GetAdminProducts = (req, res, next) => {
         })
         .catch(err => {
 
-            console.log(err)
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
 
         })
 }
@@ -100,14 +110,14 @@ exports.PostEditProduct = (req, res, next) => {
     const price = req.body.Price;
     const description = req.body.Description;
 
-    const Error = validationResult(req);
-    if (!Error.isEmpty()) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
        return res.render('Admin/add-product',
             {
                 TitlePage: 'Edit Product',
                 Path: '/admin/edit-product',
                 Editing: true,
-                ErrorMessage: Error.array()[0].msg,
+                ErrorMessage: errors.array()[0].msg,
                 product: {
 
                     Title: title,
@@ -115,7 +125,7 @@ exports.PostEditProduct = (req, res, next) => {
                     Price: price,
                     Description: description                    
                 },
-                ValidationError: Error.array()
+                ValidationError: errors.array()
 
             });
     }
@@ -135,7 +145,10 @@ exports.PostEditProduct = (req, res, next) => {
 
         })
         .catch(err => {
-            console.log(err);
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
         })
 }
 
@@ -151,11 +164,17 @@ exports.GetEditProduct = (req, res, next) => {
         res.redirect('/');
 
     }
-    else {
-        console.log(ID);
+    else {        
 
         Product.findById({ _id: new ObjectId(ID) })
             .then(Product => {
+
+                    if(!Product ){
+
+                        throw new Error('Not Find Product ');
+
+                    }
+
 
                 res.render('Admin/add-product',
                     {
@@ -169,6 +188,15 @@ exports.GetEditProduct = (req, res, next) => {
 
                     });
             })
+            .catch ( err =>{
+
+                const  error= new Error(err);
+                error.httpStatusCode = 500;
+                // it will throw to middleware app js and then it will display routes 500 
+                return next(error);
+
+
+            })
         //   res.redirect('/');
     }
 }
@@ -179,12 +207,20 @@ exports.PostDeleteProduct = (req, res, next) => {
     const ID = req.body.productId;
     Product.findByIdAndDelete(ID)
         .then(Product => {
+            if(!Product){
+
+                   throw new Error( ' Not Find Product');     
+
+
+            }
 
             res.redirect('/admin/products');
         })
         .catch(err => {
 
-            console.log(err);
-
+            const  error= new Error(err);
+            error.httpStatusCode = 500;
+            // it will throw to middleware app js and then it will display routes 500 
+            return next(error);
         })
 }; 
