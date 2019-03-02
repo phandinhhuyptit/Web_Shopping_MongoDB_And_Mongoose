@@ -330,6 +330,7 @@ exports.GetInvoice = (req, res, next) => {
             next(err);
         })
 };
+// Check Out Order
 exports.Get_Check_Out = (req, res, next) => {
     
     req.user

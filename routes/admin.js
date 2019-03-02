@@ -60,7 +60,7 @@ router.post('/edit-product',
     ]
     , isAuth.LockMenu, AdminController.PostEditProduct);
 
-router.post('/delete-product', isAuth.LockMenu, AdminController.PostDeleteProduct);
+router.delete('/product/:productId', isAuth.LockMenu, AdminController.DeleteProduct);
 
 module.exports = router;
 

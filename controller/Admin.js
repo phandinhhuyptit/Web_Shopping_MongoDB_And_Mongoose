@@ -269,9 +269,9 @@ exports.GetEditProduct = (req, res, next) => {
 }
 
 // Delete Product 
-exports.PostDeleteProduct = (req, res, next) => {
+exports.DeleteProduct = (req, res, next) => {
 
-    const ID = req.body.productId;
+    const ID = req.params.productId;
 
     Product.findById(ID)
         .then(product => {
@@ -286,18 +286,14 @@ exports.PostDeleteProduct = (req, res, next) => {
             return Product.deleteOne({ _id: ID })
 
         })
-        .then(result => {
-
-            return res.redirect('/admin/products');
+        .then(() => {
+            // i will not rederect anymore because i'll not load a new page 
+            // so i just return  response status and mesage  
+            console.log('DESTROYED PRODUCT');
+            res.status(200).json({message : 'Success'});            
 
         })
         .catch(err => {
-
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            // it will throw to middleware app js and then it will display routes 500 
-            return next(error);
-
-
+            res.status(500).json({ message : 'Deleting Product Failed '});
         })
 }; 
