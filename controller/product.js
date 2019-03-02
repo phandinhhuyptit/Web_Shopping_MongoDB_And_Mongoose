@@ -141,7 +141,7 @@ exports.Get_Order = (req, res, next) => {
 exports.Post_Order = (req, res, next) => {
     // Token is Created using CheckOut Or Elements!
     // Get The Payment Token Id Submitted By The Form :
-    const TripeToken = req.body.token;
+    
     req.user
         .populate('Cart.Items.ProductId')
         .execPopulate()
@@ -179,11 +179,11 @@ exports.Post_Order = (req, res, next) => {
         })
         .then(result => {
             stripe.charges.create({
-                amount: TotalPayMent,
+                amount: TotalPayMent * 100,
                 currency: "usd",
-                source: TripeToken,                          
-                destination: "Order Successful",
-                medata : { order_id : result._id }          
+                source: req.body.stripeToken,                          
+                description: 'Order Sucessful',
+                     
 
             })
             return req.user.ClearCart();
