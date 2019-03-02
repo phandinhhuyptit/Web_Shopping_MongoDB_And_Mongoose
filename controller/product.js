@@ -2,10 +2,11 @@ const Product = require('../models/product');
 const User = require('../models/user');
 const Orders = require('../models/order');
 const fs = require('fs');
+const stripe = require("stripe")("sk_test_xW7oGbnfYwyjSoHpRa8PAtwM");
 const path = require('path');
 const PDFDocument = require('pdfkit');
 const Items_Per_Page = 9;
-
+let TotalPayMent = 0;
 exports.Get_Product_List = (req, res, next) => {
 
     const page = +req.query.page || 1  
@@ -138,19 +139,26 @@ exports.Get_Order = (req, res, next) => {
 };
 
 exports.Post_Order = (req, res, next) => {
-
+    // Token is Created using CheckOut Or Elements!
+    // Get The Payment Token Id Submitted By The Form :
+    const TripeToken = req.body.token;
     req.user
         .populate('Cart.Items.ProductId')
         .execPopulate()
         .then(user => {
-
+           
             const products = user.Cart.Items.map(Items => {
 
 
                 return { Quantity: Items.Quantity, Product: { ...Items.ProductId._doc } }
 
             })
+            user.Cart.Items.forEach( products =>{
 
+                TotalPayMent = products.Quantity * products.ProductId.Price;
+
+            })
+            
             const Order = new Orders({
 
                 Products: products,
@@ -162,13 +170,22 @@ exports.Post_Order = (req, res, next) => {
 
                 }
             })
+         
+              
 
             return Order.save();
 
 
         })
         .then(result => {
+            stripe.charges.create({
+                amount: TotalPayMent,
+                currency: "usd",
+                source: TripeToken,                          
+                destination: "Order Successful",
+                medata : { order_id : result._id }          
 
+            })
             return req.user.ClearCart();
 
 
@@ -313,5 +330,38 @@ exports.GetInvoice = (req, res, next) => {
             next(err);
         })
 };
+exports.Get_Check_Out = (req, res, next) => {
+    
+    req.user
+        .populate('Cart.Items.ProductId')
+        .execPopulate()
+        .then(user => {
+            const products = user.Cart.Items;
+            let Total = 0;
+            
+            products.forEach( product =>{
+
+                Total +=product.Quantity * product.ProductId.Price;
+
+            })
+            
+          return  res.render('Shop/checkout', {
+
+                TitlePage: 'Check Out',
+                Path: '/CheckOut',
+                Products: products,
+                TotalSum : Total
+            });
+
+        })
+        .then( err =>{
+
+            return next(err);
+
+
+        })
+};
+
+
 
 

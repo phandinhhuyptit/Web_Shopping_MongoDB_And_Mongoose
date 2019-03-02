@@ -14,6 +14,7 @@ router.get('/',Product_Controller.Get_Index);
 
 router.post('/Cart',isAuth.LockMenu,Product_Controller.Post_Cart);
 
+router.get('/CheckOut',isAuth.LockMenu,Product_Controller.Get_Check_Out);
 
 router.post('/create-order',isAuth.LockMenu,Product_Controller.Post_Order);
 

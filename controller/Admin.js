@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator/check');
 const mongoose = require('mongoose');
 const filterFile = require('../util/file');
 
+
 const ObjectId = mongodb.ObjectId;
 const Items_Per_Page = 9;
 
@@ -158,7 +159,6 @@ exports.PostEditProduct = (req, res, next) => {
     if (!image) {
 
 
-
         return res.status(402).render('Admin/add-product',
             {
                 TitlePage: 'Add Product',
@@ -252,7 +252,6 @@ exports.GetEditProduct = (req, res, next) => {
                         product: Product,
                         ValidationError: [],
                         ErrorMessage: null
-
 
                     });
             })

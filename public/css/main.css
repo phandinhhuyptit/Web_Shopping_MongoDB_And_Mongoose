@@ -267,6 +267,14 @@ form {
   background: rgb(255, 176, 176);
   color: red;
 }
+.Total {
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-around;
+  font-family: -webkit-body;
+  color: currentColor;
+}
 
 @media (min-width: 768px) {
   .main-header__nav {
