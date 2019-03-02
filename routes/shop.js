@@ -22,6 +22,6 @@ router.get('/Orders',isAuth.LockMenu,Product_Controller.Get_Order);
 
 router.get('/Orders/:orderId',isAuth.LockMenu,Product_Controller.GetInvoice);
 
-router.post('/cart-delete-item',isAuth.LockMenu,Product_Controller.Post_Delete_Cart_Item);
+router.delete('/Cart/:productId',isAuth.LockMenu,Product_Controller.Delete_Cart_Item);
 
 module.exports= router;

@@ -251,28 +251,23 @@ exports.Get_Cart = (req, res, next) => {
         })
 }
 
-exports.Post_Delete_Cart_Item = (req, res, next) => {
+exports.Delete_Cart_Item = (req, res, next) => {
 
 
-    const ID = req.body.productId;
+    const ID = req.params.productId;
 
 
     req.user.DeleteProductFromCart(ID)
         .then(result => {
 
-            return res.redirect('/Cart');
-            1
+            res.status(200).json({message : 'Success'});  
+           
+            
         })
         .catch(err => {
 
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            // it will throw to middleware app js and then it will display routes 500 
-            return next(error);
+            res.status(500).json({ message : 'Deleting Product Failed '});
         })
-    res.redirect('/Cart');
-
-
 };
 
 exports.GetInvoice = (req, res, next) => {
