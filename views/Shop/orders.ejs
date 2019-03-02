@@ -11,7 +11,8 @@
                 <ul class="orders">
                     <% Orders.forEach(order => { %>
                         <li class="orders__item">
-                            <h1>Order - # <%= order._id %></h1>
+                            <h1>Order - # <%= order._id %> -- <a href="/Orders/<%= order._id %>"> Invoice </a></h1>
+
                             <p>Name:  <%= order.User.Name %>   Email: <%= order.User.Email %>   </p>
                             <ul class="orders__products">
                                 <% order.Products.forEach(product => { %>

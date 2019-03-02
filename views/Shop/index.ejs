@@ -33,18 +33,20 @@
                     <p class="product__description"><%= Product.Description %></p>
                 </div>
                 <div class="card__actions">
-                        <a href="/Products/<%= Product._id %>" class="btn">Detail</a>
+                    <a href="/Products/<%= Product._id %>" class="btn">Detail</a>
                     <% if (isAuthenticated) { %>
-                        <%- include('../includes/Add-To-Cart.ejs',{Product: Product}) %>
-                     <% } %>
+                    <%- include('../includes/Add-To-Cart.ejs',{Product: Product}) %>
+                    <% } %>
                 </div>
             </article>
-            <% }); %> 
+            <% }); %>
         </div>
-       
+
+        <%- include('../includes/Pagination.ejs',{CurrentPage: CurrentPage,TotalProduct : TotalProduct, HasPrevious : HasPrevious,HasNext : HasNext, NextPage : NextPage , PreviousPage: PreviousPage , LastPage: LastPage }) %>
+
         <% } else { %>
-            <h1>No Products Found!</h1>
+        <h1>No Products Found!</h1>
         <% } %>
 
     </main>
-<%- include('../includes/End.ejs') %>
+    <%- include('../includes/End.ejs') %>

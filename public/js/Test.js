@@ -8,11 +8,6 @@
         return total ;  
 
     }
-    
-
-
-
-
     try {
 
         Sum(23,2);

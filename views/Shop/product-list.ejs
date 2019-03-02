@@ -41,6 +41,7 @@
             <% }); %>
         </div>
 
+        <%- include('../includes/Pagination.ejs',{CurrentPage: CurrentPage,TotalProduct : TotalProduct, HasPrevious : HasPrevious,HasNext : HasNext, NextPage : NextPage , PreviousPage: PreviousPage , LastPage: LastPage }) %>
 
 
         <% } else { %>

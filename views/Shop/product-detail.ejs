@@ -18,21 +18,21 @@
     <main class="centered">
 
         <h1 class="product__title">
-                  <%= Product.Title %>
+            <%= Product.Title %>
         </h1>
 
         <div class="image">
-                 <img src='<%= Product.ImageURL %>' alt="A Book">
+            <img src='\<%= Product.ImageURL %>' alt="<%= Product.Title %>">
         </div>
         <div class="card__content">
-                <h2 class="product__price">$<%= Product.Price %></h2>
-                <p class="product__description"><%= Product.Description %></p>
+            <h2 class="product__price">$<%= Product.Price %></h2>
+            <p class="product__description"><%= Product.Description %></p>
         </div>
         <div class="card__actions">
-
-            <%- include('../includes/Add-To-Cart.ejs') %>
-
+            <% if (isAuthenticated) { %>
+                  <%- include('../includes/Add-To-Cart.ejs') %>
+            <%  } %>
         </div>
 
     </main>
-<%- include('../includes/End.ejs') %>
+    <%- include('../includes/End.ejs') %>

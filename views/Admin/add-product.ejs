@@ -20,16 +20,20 @@
 
         <% } %>
         <form class="product-form" action="/admin/<% if (Editing) { %>edit-product<% } else { %>add-product<% } %>"
-            method="POST">
+            method="POST" enctype ="multipart/form-data">
             <div class="form-control">
                 <label for="title">Title</label>
                 <input  class=" <%=  ValidationError.find(e =>  e.param === 'title' ) ? 'invalid' : ''%>"  type="text" name="title" id="title"
                 value="<% if (Editing) { %><%= product.Title %><% } else { %> <%=OldInput.title %> <% } %>">
             </div>
             <div class="form-control">
-                <label for="imageUrl">Image URL</label>
-                <input  class=" <%=  ValidationError.find(e =>  e.param === 'imageURL' ) ? 'invalid' : ''%>"  type="text" name="imageURL" id="imageURL"
-                value="<% if (Editing) { %><%= product.ImageURL %><% } else { %> <%=OldInput.imageURL %> <% } %>">
+                <label for="image">Image</label>
+                <input
+                 class=" <%=  ValidationError.find(e =>  e.param === 'image' ) ? 'invalid' : ''%>"                 
+                 type="file"
+                 name="image"
+                 id="image"                  
+                >
             </div>
             <div class="form-control">
                 <label for="Price">Price</label>

@@ -19,7 +19,7 @@ router.post('/create-order',isAuth.LockMenu,Product_Controller.Post_Order);
 
 router.get('/Orders',isAuth.LockMenu,Product_Controller.Get_Order);
 
-// router.get('/checkout', Product_Controller.getCheckout);
+router.get('/Orders/:orderId',isAuth.LockMenu,Product_Controller.GetInvoice);
 
 router.post('/cart-delete-item',isAuth.LockMenu,Product_Controller.Post_Delete_Cart_Item);
 

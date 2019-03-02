@@ -13,12 +13,9 @@ router.get('/add-product', isAuth.LockMenu, AdminController.GetAddProduct);
 
 router.post('/add-product',
     [
-        check('title')
-            .isAlphanumeric()
+        check('title')            
             .trim(),
-        check('imageURL')
-            .isURL()
-            .withMessage('Please Enter URL')
+        check('imageURL')           
             .trim()
         ,
         check('Price')
