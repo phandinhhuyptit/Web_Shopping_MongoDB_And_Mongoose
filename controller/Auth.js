@@ -70,7 +70,7 @@ exports.Post_Login = (req, res, next) => {
 
                     Path: '/login',
                     TitlePage: 'Login',
-                    ErrorMessage: 'Invalid Email Or Password',
+                    ErrorMessage: 'Invalid Email Or Password',                    
                     OldInput: {
                         Email: Email,
                         Password: Password
@@ -87,7 +87,7 @@ exports.Post_Login = (req, res, next) => {
 
                             Path: '/login',
                             TitlePage: 'Login',
-                            ErrorMessage: 'Invalid Email Or Password',
+                            ErrorMessage: 'Invalid Email Or Password',                            
                             OldInput: {
                                 Email: Email,
                                 Password: Password
@@ -122,12 +122,11 @@ exports.Post_Logout = (req, res, next) => {
 
 
     req.session.destroy(err => {
-
         
         res.status(200).redirect('/');
 
     });
-
+    
 }
 
 exports.Get_Sign_Up = (req, res, next) => {
@@ -146,7 +145,7 @@ exports.Get_Sign_Up = (req, res, next) => {
 
         Path: '/signup',
         TitlePage: 'Sing Up',
-        ErrorMessage: message,
+        ErrorMessage: message,     
         OldInput: {
             Email: '',
             Name: '',
@@ -163,6 +162,7 @@ exports.Post_Sign_Up = (req, res, next) => {
     const Name = req.body.name.replace(/\s{2,}/g,' ');
     const Password = req.body.password;
     const ConfirmPassword = req.body.confirmPassword;
+    const Position = "customer";
                 
     const errors = validationResult(req);
 
@@ -174,7 +174,7 @@ exports.Post_Sign_Up = (req, res, next) => {
 
             Path: '/signup',
             TitlePage: 'Sing Up',
-            ErrorMessage: errors.array()[0].msg,
+            ErrorMessage: errors.array()[0].msg,            
             OldInput: {
                 Email: Email,
                 Name: Name,
@@ -193,12 +193,13 @@ exports.Post_Sign_Up = (req, res, next) => {
                     Name: Name,
                     Email: Email,
                     Password: haddlePassword,
+                    Position : Position.toLowerCase(),
                     Cart: {
                         Items: []
                     }
                 })
                 return Account.save();
-            }
+            }   
             return res.status(404).redirect('/signup');
 
         })
@@ -240,6 +241,7 @@ exports.Get_Reset_Password = (req, res, next) => {
         Path: '/reset',
         TitlePage: 'Reset Password',
         ErrorMessage: message
+       
 
     });
 }

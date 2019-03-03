@@ -116,6 +116,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
     // Middleware global to any routes 
     res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.isPosition = req.session.user ? req.session.user.Position : null;
     // public csrfToken  
     res.locals.csrfToken = req.csrfToken();
     next();
@@ -139,21 +140,7 @@ app.use((error, req, res, next) => {
 
 mongoose.connect(MongoDB_URI,{ useNewUrlParser: true })
     .then(result => {
-        User.findOne().
-            then(user => {
-                if (!user) {
-
-                    const user = new User({
-
-                        Name: " Huy",
-                        Email: "Sihaojunvn2012@gmail.com",
-                        Cart: {
-                            Items: []
-                        }
-                    });
-                    user.save();
-                }
-            })
+    
 
         app.listen(port)
 

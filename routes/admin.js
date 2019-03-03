@@ -43,9 +43,7 @@ router.post('/edit-product',
             .isLength({min: 4})
             .withMessage('Please Check Out Length Of Title And Enter Title')
             .trim(),
-        check('imageURL')
-            .isURL()
-            .withMessage('Please Check And Enter URL')
+        check('imageURL')           
             .trim()
         ,
         check('Price')

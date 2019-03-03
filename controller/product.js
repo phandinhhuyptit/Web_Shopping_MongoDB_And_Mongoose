@@ -7,7 +7,8 @@ const path = require('path');
 const PDFDocument = require('pdfkit');
 const Items_Per_Page = 9;
 let TotalPayMent = 0;
-exports.Get_Product_List = (req, res, next) => {
+exports.Get_Product_List = (req, res, next) => {  
+
 
     const page = +req.query.page || 1  
     let TotalProduct;    
@@ -36,8 +37,9 @@ exports.Get_Product_List = (req, res, next) => {
                     LastPage : Math.ceil(TotalProduct / Items_Per_Page ),
                     prods: products,
                     TitlePage: 'Products',
-                    Path: '/Products'
-
+                    Path: '/Products',
+                    NameAccount: req.user ? req.user.Name : null
+                    
                 });
         })
         .catch(err => {
@@ -49,9 +51,9 @@ exports.Get_Product_List = (req, res, next) => {
 
         })
 }
-
 exports.Get_Index = (req, res, next) => {
 
+   
     const page = +req.query.page || 1;
     let TotalProduct;
 
@@ -79,8 +81,9 @@ exports.Get_Index = (req, res, next) => {
                     LastPage : Math.ceil(TotalProduct / Items_Per_Page ),
                     prods: products,
                     TitlePage: 'Shop',
-                    Path: '/'
-
+                    Path: '/',
+                    NameAccount: req.user ? req.user.Name : null,
+                
                 });
 
 
@@ -109,6 +112,8 @@ exports.Get_Product = (req, res, next) => {
                 Product: product,
                 Path: `/Products/${product._id}`,
                 TitlePage: 'Product Detail',
+                NameAccount: req.user ? req.user.Name : null
+               
 
             })
 
@@ -123,8 +128,10 @@ exports.Get_Order = (req, res, next) => {
             res.render('Shop/orders', {
 
                 Orders: orders,
-                Path: '/Orders',
-                TitlePage: 'Your Orders'
+                Path: '/orders',
+                TitlePage: 'Your Orders',
+                NameAccount: req.user.Name,
+               
 
             });
         })
@@ -165,7 +172,7 @@ exports.Post_Order = (req, res, next) => {
                 User: {
 
                     Name: req.user.Name,
-                    Email: req.user.Email,
+                    NameAccount: req.user.Name,
                     UserId: req.user._id
 
                 }
@@ -245,7 +252,9 @@ exports.Get_Cart = (req, res, next) => {
 
                 TitlePage: 'Cart',
                 Path: '/Cart',
-                Products: products
+                Products: products,
+                NameAccount: req.user.Name,
+               
             });
 
         })
@@ -346,7 +355,9 @@ exports.Get_Check_Out = (req, res, next) => {
                 TitlePage: 'Check Out',
                 Path: '/CheckOut',
                 Products: products,
-                TotalSum : Total
+                TotalSum : Total,
+                NameAccount: req.user.Name,
+              
             });
 
         })
@@ -356,8 +367,4 @@ exports.Get_Check_Out = (req, res, next) => {
 
 
         })
-};
-
-
-
-
+}

@@ -18,6 +18,7 @@ exports.GetAddProduct = (req, res, next) => {
             Path: '/admin/add-product',
             Editing: false,
             ErrorMessage: null,
+            NameAccount: req.user ? req.user.Name : null,
             OldInput: {
 
                 title: '',
@@ -47,6 +48,7 @@ exports.PostAddProduct = (req, res, next) => {
                 Path: '/admin/add-product',
                 Editing: false,
                 ErrorMessage: 'Attached file is not an image.',
+                NameAccount: req.user ? req.user.Name : null,
                 OldInput: {
 
                     title: title,
@@ -67,6 +69,7 @@ exports.PostAddProduct = (req, res, next) => {
                 Path: '/admin/add-product',
                 Editing: false,
                 ErrorMessage: errors.array()[0].msg,
+                NameAccount: req.user ? req.user.Name : null,
                 OldInput: {
 
                     title: title,
@@ -132,7 +135,8 @@ exports.GetAdminProducts = (req, res, next) => {
                     LastPage : Math.ceil(TotalProduct / Items_Per_Page ),                 
                     TitlePage: 'Admin Products',
                     Path: '/admin/products',
-                    prods: products
+                    prods: products,
+                    NameAccount: req.user ? req.user.Name : null
                 }
             );
 
@@ -154,6 +158,7 @@ exports.PostEditProduct = (req, res, next) => {
     const image = req.file;
     const price = req.body.Price;
     const description = req.body.Description;
+    
 
     const errors = validationResult(req);
     if (!image) {
@@ -165,6 +170,7 @@ exports.PostEditProduct = (req, res, next) => {
                 Path: '/admin/add-product',
                 Editing: false,
                 ErrorMessage: 'Attached file is not an image.',
+                NameAccount: req.user ? req.user.Name : null,
                 product: {
 
                     Title: title,
@@ -183,6 +189,7 @@ exports.PostEditProduct = (req, res, next) => {
                 Path: '/admin/edit-product',
                 Editing: true,
                 ErrorMessage: errors.array()[0].msg,
+                NameAccount: req.user ? req.user.Name : null,
                 product: {
 
                     Title: title,
@@ -195,7 +202,7 @@ exports.PostEditProduct = (req, res, next) => {
     }
     const imageURL = image;
 
-    Product.findByIdAndUpdate({ _id: new ObjectId(ProductId) },
+    Product.findByIdAndUpdate({ _id: ProductId },
         {
             Title: title,
             Price: price,
@@ -204,12 +211,12 @@ exports.PostEditProduct = (req, res, next) => {
         })
 
         .then(EditProduct => {
+
             if (!EditProduct) {
 
                 throw new Error('Not Find Product. Plase Wait Technical');
 
             }
-
             res.redirect('/admin/products');
 
         })
@@ -251,7 +258,8 @@ exports.GetEditProduct = (req, res, next) => {
                         Editing: EditMode,
                         product: Product,
                         ValidationError: [],
-                        ErrorMessage: null
+                        ErrorMessage: null,
+                        NameAccount: req.user ? req.user.Name : null                        
 
                     });
             })
