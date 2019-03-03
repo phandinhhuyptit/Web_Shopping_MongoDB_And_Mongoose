@@ -56,7 +56,7 @@ router.post('/edit-product',
             .withMessage('Please Enter Description')
             .trim()
     ]
-    , isAuth.LockMenu, AdminController.PostEditProduct);
+    , isAuth.LockMenu,AdminController.PostEditProduct);
 
 router.delete('/product/:productId', isAuth.LockMenu, AdminController.DeleteProduct);
 

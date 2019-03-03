@@ -158,7 +158,7 @@ exports.PostEditProduct = (req, res, next) => {
     const image = req.file;
     const price = req.body.Price;
     const description = req.body.Description;
-    
+    console.log(image);
 
     const errors = validationResult(req);
     if (!image) {
@@ -167,9 +167,9 @@ exports.PostEditProduct = (req, res, next) => {
         return res.status(402).render('Admin/add-product',
             {
                 TitlePage: 'Add Product',
-                Path: '/admin/add-product',
-                Editing: false,
-                ErrorMessage: 'Attached file is not an image.',
+                Path: '/admin/edit-product',
+                Editing: true,
+                ErrorMessage: 'Atruettached file is not an image.',
                 NameAccount: req.user ? req.user.Name : null,
                 product: {
 
@@ -178,7 +178,7 @@ exports.PostEditProduct = (req, res, next) => {
                     Description: description,
                     _id: ProductId
 
-                },
+                },              
                 ValidationError: [{ param: 'image' }]
             });
     }
@@ -197,10 +197,10 @@ exports.PostEditProduct = (req, res, next) => {
                     Description: description,
                     _id: ProductId
                 },
-                ValidationError: errors.array()
+               ValidationError: errors.array()
             });
     }
-    const imageURL = image;
+    const imageURL = image.path;
 
     Product.findByIdAndUpdate({ _id: ProductId },
         {
@@ -232,6 +232,7 @@ exports.PostEditProduct = (req, res, next) => {
 exports.GetEditProduct = (req, res, next) => {
 
     const EditMode = req.query.Edit;
+    console.log(EditMode);
     // const ID = req.body.productId;       
     const ID = req.params.ID
 
@@ -259,7 +260,7 @@ exports.GetEditProduct = (req, res, next) => {
                         product: Product,
                         ValidationError: [],
                         ErrorMessage: null,
-                        NameAccount: req.user ? req.user.Name : null                        
+                        NameAccount: req.user ? req.user.Name : null                    
 
                     });
             })

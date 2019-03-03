@@ -43,7 +43,7 @@
             <div class="form-control">
                 <label for="Description">Description</label>
                 <textarea  class=" <%=  ValidationError.find(e =>  e.param === 'Description' ) ? 'invalid' : ''%>"  name="Description" id="Description"
-                    rows="5"><% if (Editing) { %><%= product.Description %><% } else { %> <%= OldInput.Description %> <% } %>  </textarea>
+                    rows="5"><% if (Editing) { %><%= product.Description %><% } else { %> <%=OldInput.Description %> <% } %>  </textarea>
             </div>
             <% if (Editing) { %>
             <input type="hidden" value="<%= product._id %>" name="productId">
