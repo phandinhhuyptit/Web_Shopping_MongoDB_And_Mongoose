@@ -307,9 +307,12 @@ exports.GetInvoice = (req, res, next) => {
             // create file pdf   
             pdfDoc.pipe(fs.createWriteStream(invoicePath));
             pdfDoc.pipe(res);
+
+            // edit Styte for file PDF
             pdfDoc.fontSize(26).text('Invoice', {
                 underline: true
             });
+            
             pdfDoc.text('-------------------------');
             let totalPrice = 0;
             order.Products.forEach(prod => {

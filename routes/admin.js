@@ -13,6 +13,7 @@ router.get('/add-product', isAuth.LockMenu, AdminController.GetAddProduct);
 
 router.post('/add-product',
     [
+        // validator
         check('title')            
             .trim(),
         check('imageURL')           
@@ -39,6 +40,7 @@ router.get('/edit-product/:ID', isAuth.LockMenu, AdminController.GetEditProduct)
 router.post('/edit-product',
 
     [
+        // // validator
         check('title')
             .isLength({min: 4})
             .withMessage('Please Check Out Length Of Title And Enter Title')

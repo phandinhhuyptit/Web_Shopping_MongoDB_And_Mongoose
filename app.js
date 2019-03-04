@@ -14,6 +14,8 @@ const csrf = require('csurf');
 // error massage
 const flash = require('connect-flash');
 
+
+// thay đổi tên của tệp filename and tạo images  or điều hướng Multer
 const filestorage = multer.diskStorage({
 
     destination : (res,file,cb) =>{
@@ -29,7 +31,7 @@ const filestorage = multer.diskStorage({
 
 })
 
-
+// xét true or false , bộ lộc file chỉ trong phạm vị png or jpg or jpeg 
 const fileFilter = (req, file, cb) => {
 
     if (file.mimetype === 'image/png' ||
@@ -44,9 +46,11 @@ const fileFilter = (req, file, cb) => {
     cb(null, false)
 }
 
-
+// muốn sử dụng ejs thì phải khai báo thế này   
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+// các middleware routes 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/Auth');
@@ -71,13 +75,17 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const MongoDB_URI = 'mongodb+srv://PhanDinhHuy_1996:professionalhuy331@severwebshop-xbrlk.mongodb.net/Shop?retryWrites=true';
 
+// session liên kết mongodbStre để chứa session . sài trong trường hợp có quá nhiều user
 const store = new MongoDBStore({
 
     uri: MongoDB_URI,
     collection: 'mySession'
 })
+// khai báo CSRF 
 const csrfProtection = csrf();
 
+
+// khai báo sử dụng session vs cookie 
 app.use( 
     session(
         {
@@ -92,6 +100,8 @@ app.use(csrfProtection)
 // Middleware run into your project
 app.use(flash());
 
+
+//  kiểm tra và nhận user . public mọi nơi . khi đăng nhập được 
 app.use((req, res, next) => {
     if(!req.session.user){
 
@@ -105,7 +115,9 @@ app.use((req, res, next) => {
 
                 return next();
 
-            }            
+            }
+            // gán cho req.user chứ không phải session user nếu gán session.
+            // user sẽ không sài được các phương thức trong SChema            
             req.user = user;
             return next();
         })
@@ -122,10 +134,12 @@ app.use((req, res, next) => {
     next();
 });
 
+// MiddleWare Routes
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
+// Middleware Error 500
 app.get('/500',errorController.GetError500);
 app.use(errorController.GetError404);
 
@@ -137,7 +151,7 @@ app.use((error, req, res, next) => {
     
     res.redirect('/500');
   });
-
+// Connect Server or Localhost
 mongoose.connect(MongoDB_URI,{ useNewUrlParser: true })
     .then(result => {
     

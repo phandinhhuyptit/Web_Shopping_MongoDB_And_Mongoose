@@ -1,13 +1,12 @@
 const Product = require('../models/product');
 const mongodb = require('mongodb');
+// Trả Về Kết Quả Lỗi  :"validationResult  
 const { validationResult } = require('express-validator/check');
 const mongoose = require('mongoose');
 const filterFile = require('../util/file');
 
-
 const ObjectId = mongodb.ObjectId;
 const Items_Per_Page = 9;
-
 
 exports.GetAddProduct = (req, res, next) => {
 
@@ -35,6 +34,8 @@ exports.PostAddProduct = (req, res, next) => {
 
 
     const title = req.body.title.replace(/\s{2,}/g, ' ');
+
+    // Đọc File 
     const image = req.file;
     const price = req.body.Price;
     const description = req.body.Description;

@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+
+// Create Schema Like Table Of SQL 
 const OrderSchema = new Schema({
 
 

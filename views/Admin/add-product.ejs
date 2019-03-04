@@ -19,6 +19,8 @@
         <div class="user-message user-message--error"> <%= ErrorMessage %> </div>
 
         <% } %>
+
+        <!--  Muốn Upload Fle Thì Phải Cài thêm  enctype ="multipart/form-data" Cho Form để nó nhận diện được Upload File -->
         <form class="product-form" action="/admin/<% if (Editing) { %>edit-product<% } else { %>add-product<% } %>"
             method="POST" enctype ="multipart/form-data">
             <div class="form-control">
