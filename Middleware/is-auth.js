@@ -12,9 +12,7 @@ exports.LockMenu = (req , res , next  ) =>{
 exports.LockLogGin = (req , res , next ) =>{
 
         if(req.session.isLoggedIn){
-
             res.redirect('/');
-
         }
      next();   
 

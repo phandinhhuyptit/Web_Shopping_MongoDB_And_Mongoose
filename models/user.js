@@ -36,8 +36,6 @@ const UserSchema = new Schema({
     }
 });
 
-
-
 // Method Object
 UserSchema.methods.Add_To_Cart = function (Product) {
 

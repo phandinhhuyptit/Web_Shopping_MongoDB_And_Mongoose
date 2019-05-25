@@ -34,7 +34,6 @@ const deleteProduct = (btn) =>{
         //  res.status(404).json({message : 'Remove Product Fail'}) 
 
     })
-
 } 
 
 

@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 // ...rest of the initial code omitted for simplicity.
-const { validationResult } = require('express-validator/check');
+const {validationResult} = require('express-validator/check');
 
 const transporter = nodemailer.createTransport(
 
@@ -94,7 +94,6 @@ exports.Post_Login = (req, res, next) => {
                             },
                             ValidationError: [{param : 'password'} ]
                         });
-
                     }
                     req.session.isLoggedIn = true;
                     req.session.user = user;
@@ -270,8 +269,6 @@ exports.Post_Reset_Password = (req, res, next) => {
             })
             .then(resultUser => {
 
-
-
                 return res.redirect(`http://localhost:3000/reset/${token}`);
             })
             .catch(err => {
@@ -352,6 +349,7 @@ exports.Post_New_Password = (req, res, next) => {
         .then(result => {
 
             res.redirect('/');
+            console.log(result);
 
         })
         .catch(err => {

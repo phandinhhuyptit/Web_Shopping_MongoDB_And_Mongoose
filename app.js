@@ -1,7 +1,7 @@
 
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3001;
 const mongoose = require('mongoose');
 const multer = require('multer');
 const session = require('express-session');
@@ -18,15 +18,15 @@ const flash = require('connect-flash');
 // thay đổi tên của tệp filename and tạo images  or điều hướng Multer
 const filestorage = multer.diskStorage({
 
-    destination : (res,file,cb) =>{
+    destination: (res, file, cb) => {
 
 
-            cb(null , 'images');
+        cb(null, 'images');
 
     },
-    filename : (req , file , cb ) =>{
+    filename: (req, file, cb) => {
 
-        cb(null,file.fieldname+'_'+Date.now()+'_'+ file.originalname);
+        cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname);
     }
 
 })
@@ -63,9 +63,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 // Upload File
-app.use(    
+app.use(
 
-    multer({storage : filestorage,fileFilter : fileFilter} ).single('image')
+    multer({ storage: filestorage, fileFilter: fileFilter }).single('image')
 
 )
 
@@ -73,7 +73,7 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-const MongoDB_URI = 'mongodb+srv://PhanDinhHuy_1996:professionalhuy331@severwebshop-xbrlk.mongodb.net/Shop?retryWrites=true';
+const MongoDB_URI = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||'mongodb+srv://PhanDinhHuy_1996:professionalhuy331@severwebshop-xbrlk.mongodb.net/Shop?retryWrites=true';
 
 // session liên kết mongodbStre để chứa session . sài trong trường hợp có quá nhiều user
 const store = new MongoDBStore({
@@ -86,13 +86,13 @@ const csrfProtection = csrf();
 
 
 // khai báo sử dụng session vs cookie 
-app.use( 
+app.use(
     session(
         {
-            secret: ' my secret',
+            secret: 'my secret',
             resave: false,
             saveUninitialized: false,
-            store : store
+            store: store
         }));
 
 // Middleware run into your views        
@@ -103,7 +103,7 @@ app.use(flash());
 
 //  kiểm tra và nhận user . public mọi nơi . khi đăng nhập được 
 app.use((req, res, next) => {
-    if(!req.session.user){
+    if (!req.session.user) {
 
         return next();
 
@@ -111,7 +111,7 @@ app.use((req, res, next) => {
 
     User.findById(req.session.user._id)
         .then(user => {
-            if(!user){
+            if (!user) {
 
                 return next();
 
@@ -140,7 +140,7 @@ app.use(shopRoutes);
 app.use(authRoutes);
 
 // Middleware Error 500
-app.get('/500',errorController.GetError500);
+app.get('/500', errorController.GetError500);
 app.use(errorController.GetError404);
 
 
@@ -148,13 +148,13 @@ app.use(errorController.GetError404);
 //middle will receive error from all file in project
 app.use((error, req, res, next) => {
     // res.status(error.httpStatusCode).render(...);
-    
+
     res.redirect('/500');
-  });
+});
 // Connect Server or Localhost
-mongoose.connect(MongoDB_URI,{ useNewUrlParser: true })
+mongoose.connect(MongoDB_URI, { useNewUrlParser: true })
     .then(result => {
-    
+
 
         app.listen(port)
 

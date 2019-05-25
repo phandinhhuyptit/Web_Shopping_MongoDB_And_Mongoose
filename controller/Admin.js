@@ -4,6 +4,7 @@ const mongodb = require('mongodb');
 const { validationResult } = require('express-validator/check');
 const mongoose = require('mongoose');
 const filterFile = require('../util/file');
+const Order = require('../models/order');
 
 const ObjectId = mongodb.ObjectId;
 const Items_Per_Page = 9;
@@ -40,8 +41,7 @@ exports.PostAddProduct = (req, res, next) => {
     const price = req.body.Price;
     const description = req.body.Description;
 
-    if (!image) {
-
+    if (!image) {        
 
         return res.status(402).render('Admin/add-product',
             {
@@ -191,7 +191,7 @@ exports.PostEditProduct = (req, res, next) => {
                 Editing: true,
                 ErrorMessage: errors.array()[0].msg,
                 NameAccount: req.user ? req.user.Name : null,
-                product: {
+                product: { 
 
                     Title: title,
                     Price: price,

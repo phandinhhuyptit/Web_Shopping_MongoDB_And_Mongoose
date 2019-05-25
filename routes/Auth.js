@@ -12,8 +12,8 @@ router.get('/login', isAuth.LockLogGin, AuthController.Get_Login);
 
 router.post('/login',
        check('email')
-        .isEmail()
-        .withMessage('Please enter a valid email')
+       .isEmail()
+       .withMessage('Please enter a valid email')
 
     , isAuth.LockLogGin, AuthController.Post_Login);
 

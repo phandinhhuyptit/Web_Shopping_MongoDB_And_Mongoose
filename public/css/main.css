@@ -10,6 +10,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+
 main {
   padding: 1rem;
   margin: auto;
@@ -241,11 +242,11 @@ form {
   background: #b9c9ff;
   text-align: center;
 }
+
 .pagination {
   margin-top: 2rem;
   text-align: center;
 }
-
 .pagination a {
   text-decoration: none;
   color: #00695c;
